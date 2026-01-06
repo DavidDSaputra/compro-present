@@ -14,6 +14,7 @@ import {
     LogOut,
     Menu,
     X,
+    Package,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
@@ -22,6 +23,7 @@ const menuItems = [
     { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { label: "Navigasi", href: "/admin/navigation", icon: Navigation },
     { label: "Halaman", href: "/admin/pages", icon: FileText },
+    { label: "Produk", href: "/admin/products", icon: Package },
     { label: "Leads", href: "/admin/leads", icon: Users },
     { label: "Pengaturan", href: "/admin/settings", icon: Settings },
 ];

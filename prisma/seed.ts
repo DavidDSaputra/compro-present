@@ -441,6 +441,72 @@ async function main() {
         });
     }
 
+    // Seed Products
+    const products = [
+        {
+            id: "hris-core",
+            name: "Present HRIS Core",
+            slug: "hris-core",
+            description: "Kelola data karyawan, struktur organisasi, dan dokumen HR dalam satu platform terintegrasi.",
+            icon: "Users",
+            features: "Data Karyawan, Struktur Organisasi, Dokumen HR, Employee Self Service",
+            order: 1,
+        },
+        {
+            id: "attendance",
+            name: "Attendance",
+            slug: "attendance",
+            description: "Sistem absensi canggih dengan face recognition, geolocation, dan integrasi mesin fingerprint.",
+            icon: "Clock",
+            features: "Face Recognition, Geolocation, Fingerprint, Shift Management",
+            order: 2,
+        },
+        {
+            id: "payroll",
+            name: "Payroll",
+            slug: "payroll",
+            description: "Penggajian otomatis dengan perhitungan PPh21, BPJS, dan komponen salary lainnya.",
+            icon: "DollarSign",
+            features: "PPh21 Calculator, BPJS, Slip Gaji Digital, Bank Transfer",
+            order: 3,
+        },
+        {
+            id: "performance",
+            name: "Performance",
+            slug: "performance",
+            description: "Kelola KPI, OKR, dan performance review dengan dashboard analytics yang powerful.",
+            icon: "TrendingUp",
+            features: "KPI Management, OKR Tracking, 360 Feedback, Analytics Dashboard",
+            order: 4,
+        },
+        {
+            id: "recruitment",
+            name: "Recruitment",
+            slug: "recruitment",
+            description: "Dari job posting hingga onboarding, kelola proses rekrutmen dengan mudah.",
+            icon: "UserPlus",
+            features: "Job Posting, Applicant Tracking, Interview Scheduling, Onboarding",
+            order: 5,
+        },
+        {
+            id: "mobile-app",
+            name: "Mobile HR App",
+            slug: "mobile-app",
+            description: "Akses HR di mana saja dengan aplikasi mobile untuk iOS dan Android.",
+            icon: "Smartphone",
+            features: "iOS & Android, Push Notifications, Offline Mode, Biometric Login",
+            order: 6,
+        },
+    ];
+
+    for (const product of products) {
+        await prisma.product.upsert({
+            where: { id: product.id },
+            update: product,
+            create: product,
+        });
+    }
+
     console.log("Seed completed successfully!");
 }
 
