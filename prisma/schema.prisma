@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+}
+
+model SiteSetting {
+  id           String  @id @default(cuid())
+  companyName  String
+  logoUrl      String?
+  address      String? @db.Text
+  email        String?
+  whatsappLink String?
+  mapEmbedHtml String? @db.Text
+}
+
+model Navigation {
+  id    String           @id @default(cuid())
+  name  String
+  items NavigationItem[]
+}
+
+model NavigationItem {
+  id           String           @id @default(cuid())
+  navigationId String
+  navigation   Navigation       @relation(fields: [navigationId], references: [id], onDelete: Cascade)
+  label        String
+  href         String?
+  type         String           @default("link")
+  parentId     String?
+  parent       NavigationItem?  @relation("NavItemChildren", fields: [parentId], references: [id], onDelete: Cascade)
+  children     NavigationItem[] @relation("NavItemChildren")
+  order        Int              @default(0)
+}
+
+model Page {
+  id        String    @id @default(cuid())
+  slug      String    @unique
+  title     String
+  sections  Section[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Section {
+  id                String        @id @default(cuid())
+  pageId            String
+  page              Page          @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  type              String
+  heading           String?
+  subheading        String?       @db.Text
+  ctaPrimaryLabel   String?
+  ctaPrimaryHref    String?
+  ctaSecondaryLabel String?
+  ctaSecondaryHref  String?
+  imageUrl          String?
+  order             Int           @default(0)
+  items             SectionItem[]
+}
+
+model SectionItem {
+  id        String  @id @default(cuid())
+  sectionId String
+  section   Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  title     String?
+  subtitle  String? @db.Text
+  imageUrl  String?
+  href      String?
+  tag       String?
+  order     Int     @default(0)
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  fullName  String
+  email     String
+  phone     String?
+  company   String?
+  employees String?
+  interest  String?
+  message   String?  @db.Text
+  consent   Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
