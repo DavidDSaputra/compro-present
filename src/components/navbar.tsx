@@ -81,6 +81,22 @@ export function Navbar({ items, logoUrl }: NavbarProps) {
     const [isScrolled, setIsScrolled] = React.useState(false);
     const [animationPhase, setAnimationPhase] = React.useState<'idle' | 'orb-appear' | 'orb-move' | 'sidebar-reveal' | 'sidebar-collapse'>('idle');
     const wasScrolledRef = React.useRef(false);
+    const closeTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+    // Delayed close function for sidebar dropdown
+    const handleSidebarMouseLeave = () => {
+        closeTimeoutRef.current = setTimeout(() => {
+            setActiveDropdown(null);
+        }, 300); // 300ms delay before closing
+    };
+
+    const handleSidebarMouseEnter = () => {
+        // Cancel any pending close timeout
+        if (closeTimeoutRef.current) {
+            clearTimeout(closeTimeoutRef.current);
+            closeTimeoutRef.current = null;
+        }
+    };
 
     React.useEffect(() => {
         const handleScroll = () => {
@@ -269,7 +285,8 @@ export function Navbar({ items, logoUrl }: NavbarProps) {
                         ? "-translate-y-1/2 opacity-100"
                         : "-translate-y-1/2 opacity-0 pointer-events-none scale-0"
                 )}
-                onMouseLeave={() => setActiveDropdown(null)}
+                onMouseLeave={handleSidebarMouseLeave}
+                onMouseEnter={handleSidebarMouseEnter}
             >
                 {/* Side Navigation Items */}
                 <nav className="w-full flex-1 px-1.5 group-hover:px-3 flex flex-col items-center group-hover:items-stretch overflow-hidden">

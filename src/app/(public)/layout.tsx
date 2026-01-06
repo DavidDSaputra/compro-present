@@ -43,8 +43,8 @@ export default async function PublicLayout({
             <Footer
                 logoUrl={settings?.logoUrl || null}
                 companyName={settings?.companyName || "Present"}
-                address="Lorem Ipsum Dolor Sit Amet"
-                email="lorem.ipsum@gmail.com"
+                address={settings?.address || null}
+                email={settings?.email || null}
                 whatsappLink={settings?.whatsappLink || null}
             />
         </div>

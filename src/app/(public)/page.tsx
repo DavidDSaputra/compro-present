@@ -2,6 +2,10 @@ import { SectionRenderer } from "@/components/section-renderer";
 import prisma from "@/lib/prisma";
 import { Metadata } from "next";
 
+// Disable caching - always fetch fresh data
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
     title: "Present - Solusi HRIS Terdepan Indonesia",
     description: "Platform HRIS terintegrasi untuk mengelola karyawan, absensi, penggajian, dan performa dalam satu sistem yang powerful.",
