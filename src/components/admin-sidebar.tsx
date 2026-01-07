@@ -15,6 +15,7 @@ import {
     Menu,
     X,
     Package,
+    Handshake,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
@@ -24,6 +25,7 @@ const menuItems = [
     { label: "Navigasi", href: "/admin/navigation", icon: Navigation },
     { label: "Halaman", href: "/admin/pages", icon: FileText },
     { label: "Produk", href: "/admin/products", icon: Package },
+    { label: "Mitra Kami", href: "/admin/partners", icon: Handshake },
     { label: "Leads", href: "/admin/leads", icon: Users },
     { label: "Pengaturan", href: "/admin/settings", icon: Settings },
 ];

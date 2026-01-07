@@ -301,6 +301,43 @@ async function main() {
         });
     }
 
+    // How It Works Section
+    const howItWorksSection = await prisma.section.upsert({
+        where: { id: "home-how-it-works" },
+        update: {},
+        create: {
+            id: "home-how-it-works",
+            pageId: homePage.id,
+            type: "how-it-works",
+            heading: "Bagaimana Cara Kerjanya?",
+            subheading: "Empat langkah mudah untuk memulai transformasi digital HR perusahaan Anda",
+            order: 5,
+        },
+    });
+
+    const howItWorksItems = [
+        { title: "Konsultasi & Analisis", subtitle: "Tim kami akan menganalisis kebutuhan HR perusahaan Anda dan memberikan solusi terbaik yang sesuai dengan skala bisnis.", tag: "Step 1" },
+        { title: "Setup & Konfigurasi", subtitle: "Kami membantu setup sistem, import data karyawan, dan konfigurasi sesuai kebijakan perusahaan Anda.", tag: "Step 2" },
+        { title: "Training & Go-Live", subtitle: "Pelatihan lengkap untuk tim HR Anda dan pendampingan hingga sistem berjalan lancar.", tag: "Step 3" },
+        { title: "Support Berkelanjutan", subtitle: "Dukungan teknis 24/7 dan update berkala untuk memastikan sistem selalu optimal.", tag: "Step 4" },
+    ];
+
+    for (let i = 0; i < howItWorksItems.length; i++) {
+        const item = howItWorksItems[i];
+        await prisma.sectionItem.upsert({
+            where: { id: `how-it-works-${i + 1}` },
+            update: {},
+            create: {
+                id: `how-it-works-${i + 1}`,
+                sectionId: howItWorksSection.id,
+                title: item.title,
+                subtitle: item.subtitle,
+                tag: item.tag,
+                order: i + 1,
+            },
+        });
+    }
+
     const testimonialsSection = await prisma.section.upsert({
         where: { id: "home-testimonials" },
         update: {},
@@ -310,7 +347,7 @@ async function main() {
             type: "testimonials",
             heading: "Apa Kata Mereka?",
             subheading: "Dengarkan langsung dari pelanggan kami yang telah merasakan manfaat Present.",
-            order: 5,
+            order: 6,
         },
     });
 
@@ -344,7 +381,7 @@ async function main() {
             pageId: homePage.id,
             type: "awards",
             heading: "Penghargaan & Sertifikasi",
-            order: 6,
+            order: 7,
         },
     });
 
@@ -380,7 +417,7 @@ async function main() {
             subheading: "Jadwalkan demo gratis dan lihat bagaimana Present dapat membantu bisnis Anda.",
             ctaPrimaryLabel: "Jadwalkan Demo Gratis",
             ctaPrimaryHref: "/contact",
-            order: 7,
+            order: 8,
         },
     });
 

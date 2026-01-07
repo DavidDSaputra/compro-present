@@ -5,6 +5,8 @@ import { StatsSection } from "./sections/stats-section";
 import { TestimonialsSection } from "./sections/testimonials-section";
 import { AwardsSection } from "./sections/awards-section";
 import { CtaSection } from "./sections/cta-section";
+import { HowItWorksSection } from "./sections/how-it-works-section";
+import { ClientsSection } from "./sections/clients-section";
 
 interface SectionItem {
     id: string;
@@ -51,12 +53,9 @@ export function SectionRenderer({ sections }: SectionRendererProps) {
                             />
                         );
                     case "logo-cloud":
+                    case "clients":
                         return (
-                            <LogoCloudSection
-                                key={section.id}
-                                heading={section.heading}
-                                items={section.items}
-                            />
+                            <ClientsSection key={section.id} />
                         );
                     case "features":
                         return (
@@ -100,6 +99,15 @@ export function SectionRenderer({ sections }: SectionRendererProps) {
                                 subheading={section.subheading}
                                 ctaPrimaryLabel={section.ctaPrimaryLabel}
                                 ctaPrimaryHref={section.ctaPrimaryHref}
+                            />
+                        );
+                    case "how-it-works":
+                        return (
+                            <HowItWorksSection
+                                key={section.id}
+                                heading={section.heading}
+                                subheading={section.subheading}
+                                items={section.items}
                             />
                         );
                     default:
