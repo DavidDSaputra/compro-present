@@ -25,11 +25,11 @@ export function AwardsSection({ heading, items }: AwardsSectionProps) {
                     {items.map((item, index) => (
                         <div
                             key={item.id}
-                            className="flex flex-col items-center text-center p-8 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-xl hover:border-blue-200 transition-all duration-300 transform hover:-translate-y-2 group animate-fade-in-up"
+                            className="flex flex-col items-center text-center p-8 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:shadow-xl hover:border-[#325095]/30 transition-all duration-300 transform hover:-translate-y-2 group animate-fade-in-up"
                             style={{ animationDelay: `${index * 150}ms` }}
                         >
                             <div className="p-4 bg-white rounded-full shadow-sm mb-6 group-hover:scale-110 transition-transform duration-300">
-                                <Award className="h-8 w-8 text-blue-600" />
+                                <Award className="h-8 w-8 text-[#325095]" />
                             </div>
                             <p className="font-bold text-slate-900 text-lg mb-2">{item.title}</p>
                             <p className="text-sm text-slate-500 font-medium">{item.subtitle}</p>

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { Dictionary } from "@/dictionaries";
 
 interface Partner {
     id: string;
@@ -13,9 +14,14 @@ interface Partner {
     order: number;
 }
 
-export function ClientsSection() {
+interface ClientsSectionProps {
+    dictionary?: Dictionary;
+}
+
+export function ClientsSection({ dictionary }: ClientsSectionProps) {
     const [clients, setClients] = useState<Partner[]>([]);
     const [loading, setLoading] = useState(true);
+    const t = dictionary?.clients;
 
     useEffect(() => {
         async function fetchClients() {
@@ -51,19 +57,19 @@ export function ClientsSection() {
                 }} />
             </div>
 
-            {/* Gradient accents */}
-            <div className="absolute top-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-0 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl" />
+            {/* Gradient accents - using variations of #325095 */}
+            <div className="absolute top-0 left-0 w-64 h-64 bg-[#325095]/20 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-0 w-80 h-80 bg-[#7a9ece]/20 rounded-full blur-3xl" />
 
             <div className="container mx-auto px-4 lg:px-8 relative z-10">
                 {/* Header */}
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-12">
                     <div>
-                        <p className="text-blue-400 text-sm font-medium tracking-wide uppercase mb-2">
-                            Client Kami
+                        <p className="text-[#92b8e1] text-sm font-medium tracking-wide uppercase mb-2">
+                            {t?.eyebrow || "Klien Kami"}
                         </p>
                         <h2 className="text-2xl lg:text-3xl font-bold text-white">
-                            Dipercaya oleh Berbagai Perusahaan
+                            {t?.title || "Dipercaya oleh Berbagai Perusahaan"}
                         </h2>
                     </div>
                     <div className="flex items-center gap-3">
@@ -91,7 +97,7 @@ export function ClientsSection() {
                             ))}
                         </div>
                         <span className="text-slate-400 text-sm">
-                            +{clients.length} perusahaan
+                            +{clients.length} {t?.countSuffix || "perusahaan"}
                         </span>
                     </div>
                 </div>
@@ -113,7 +119,7 @@ export function ClientsSection() {
                                     rel="noopener noreferrer"
                                     className="group flex-shrink-0"
                                 >
-                                    <div className="w-36 h-16 flex items-center justify-center bg-white rounded-xl px-4 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/20">
+                                    <div className="w-36 h-16 flex items-center justify-center bg-white rounded-xl px-4 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#325095]/20">
                                         {client.logoUrl ? (
                                             <Image
                                                 src={client.logoUrl}
@@ -136,7 +142,7 @@ export function ClientsSection() {
 
                 {/* Bottom text */}
                 <p className="text-center text-slate-500 text-sm mt-6">
-                    Bergabung bersama perusahaan lain yang telah mempercayakan pengelolaan SDM mereka kepada Present
+                    {t?.bottomText || "Bergabung bersama perusahaan lain yang telah mempercayakan pengelolaan SDM mereka kepada Present"}
                 </p>
             </div>
         </section>

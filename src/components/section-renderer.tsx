@@ -7,6 +7,7 @@ import { AwardsSection } from "./sections/awards-section";
 import { CtaSection } from "./sections/cta-section";
 import { HowItWorksSection } from "./sections/how-it-works-section";
 import { ClientsSection } from "./sections/clients-section";
+import { Dictionary } from "@/dictionaries";
 
 interface SectionItem {
     id: string;
@@ -32,9 +33,10 @@ interface Section {
 
 interface SectionRendererProps {
     sections: Section[];
+    dictionary?: Dictionary;
 }
 
-export function SectionRenderer({ sections }: SectionRendererProps) {
+export function SectionRenderer({ sections, dictionary }: SectionRendererProps) {
     return (
         <>
             {sections.map((section) => {
@@ -50,12 +52,16 @@ export function SectionRenderer({ sections }: SectionRendererProps) {
                                 ctaSecondaryLabel={section.ctaSecondaryLabel}
                                 ctaSecondaryHref={section.ctaSecondaryHref}
                                 imageUrl={section.imageUrl}
+                                dictionary={dictionary}
                             />
                         );
                     case "logo-cloud":
                     case "clients":
                         return (
-                            <ClientsSection key={section.id} />
+                            <ClientsSection
+                                key={section.id}
+                                dictionary={dictionary}
+                            />
                         );
                     case "features":
                         return (
@@ -64,6 +70,7 @@ export function SectionRenderer({ sections }: SectionRendererProps) {
                                 heading={section.heading}
                                 subheading={section.subheading}
                                 items={section.items}
+                                dictionary={dictionary}
                             />
                         );
                     case "stats":
@@ -72,6 +79,7 @@ export function SectionRenderer({ sections }: SectionRendererProps) {
                                 key={section.id}
                                 heading={section.heading}
                                 items={section.items}
+                                dictionary={dictionary}
                             />
                         );
                     case "testimonials":
@@ -81,6 +89,7 @@ export function SectionRenderer({ sections }: SectionRendererProps) {
                                 heading={section.heading}
                                 subheading={section.subheading}
                                 items={section.items}
+                                dictionary={dictionary}
                             />
                         );
                     case "awards":
@@ -99,6 +108,7 @@ export function SectionRenderer({ sections }: SectionRendererProps) {
                                 subheading={section.subheading}
                                 ctaPrimaryLabel={section.ctaPrimaryLabel}
                                 ctaPrimaryHref={section.ctaPrimaryHref}
+                                dictionary={dictionary}
                             />
                         );
                     case "how-it-works":
@@ -108,6 +118,7 @@ export function SectionRenderer({ sections }: SectionRendererProps) {
                                 heading={section.heading}
                                 subheading={section.subheading}
                                 items={section.items}
+                                dictionary={dictionary}
                             />
                         );
                     default:

@@ -1,5 +1,8 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Quote } from "lucide-react";
+import { Dictionary } from "@/dictionaries";
 
 interface TestimonialItem {
     id: string;
@@ -12,17 +15,19 @@ interface TestimonialsSectionProps {
     heading: string | null;
     subheading: string | null;
     items: TestimonialItem[];
+    dictionary?: Dictionary;
 }
 
 export function TestimonialsSection({
     heading,
     subheading,
     items,
+    dictionary,
 }: TestimonialsSectionProps) {
     return (
         <section className="py-20 lg:py-28 bg-slate-50 relative overflow-hidden">
             {/* Background Decoration */}
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl" />
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#325095]/10 rounded-full blur-3xl" />
 
             <div className="container mx-auto px-4 lg:px-8 relative z-10">
                 <div className="text-center mb-16 animate-fade-in-up">
@@ -46,13 +51,13 @@ export function TestimonialsSection({
                             style={{ animationDelay: `${index * 150}ms` }}
                         >
                             <CardContent className="pt-8 px-8 pb-8 h-full flex flex-col">
-                                <Quote className="h-10 w-10 text-blue-100 mb-6" />
+                                <Quote className="h-10 w-10 text-[#325095]/20 mb-6" />
                                 <p className="text-slate-600 mb-8 italic text-lg leading-relaxed flex-grow">
                                     &ldquo;{item.subtitle}&rdquo;
                                 </p>
                                 <div className="border-t border-slate-100 pt-6 mt-auto">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">
+                                        <div className="w-10 h-10 rounded-full bg-[#325095]/10 flex items-center justify-center text-[#325095] font-bold text-sm">
                                             {item.title?.charAt(0)}
                                         </div>
                                         <div>

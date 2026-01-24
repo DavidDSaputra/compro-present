@@ -1,0 +1,163 @@
+{
+    "navbar": {
+        "signIn": "Masuk",
+        "contactSales": "Hubungi Sales",
+        "tryFree": "Coba Gratis",
+        "viewAll": "Lihat Semua",
+        "menu": {
+            "produk": "Produk",
+            "solusi": "Solusi",
+            "pelanggan": "Pelanggan",
+            "resources": "Resources",
+            "tentangKami": "Tentang Kami",
+            "hubungiKami": "Hubungi Kami"
+        },
+        "submenu": {
+            "hrisCore": "Present HRIS Core",
+            "attendance": "Absensi",
+            "payroll": "Penggajian",
+            "recruitment": "Rekrutmen",
+            "performance": "Kinerja",
+            "mobileApp": "Aplikasi Mobile HR",
+            "enterprise": "Enterprise",
+            "manufacturing": "Manufaktur",
+            "retail": "Retail",
+            "services": "Jasa",
+            "customerStories": "Cerita Pelanggan",
+            "testimonials": "Testimoni",
+            "clients": "Klien Kami",
+            "blog": "Blog",
+            "webinars": "Webinar",
+            "ebooks": "E-Book",
+            "faq": "FAQ",
+            "companyProfile": "Profil Perusahaan",
+            "careers": "Karier",
+            "contact": "Hubungi Kami"
+        }
+    },
+    "products": {
+        "title": "Produk",
+        "hrisCore": "Present HRIS Core",
+        "attendance": "Absensi",
+        "payroll": "Penggajian",
+        "recruitment": "Rekrutmen",
+        "performance": "Kinerja",
+        "mobileApp": "Aplikasi Mobile HR"
+    },
+    "solutions": {
+        "title": "Solusi",
+        "enterprise": "Enterprise",
+        "manufacturing": "Manufaktur",
+        "retail": "Retail",
+        "services": "Jasa"
+    },
+    "customers": {
+        "title": "Pelanggan",
+        "stories": "Cerita Pelanggan",
+        "testimonials": "Testimoni",
+        "clients": "Klien Kami"
+    },
+    "resources": {
+        "title": "Resources",
+        "blog": "Blog",
+        "webinars": "Webinar",
+        "ebooks": "E-Book",
+        "faq": "FAQ"
+    },
+    "about": {
+        "title": "Tentang Kami",
+        "profile": "Profil Perusahaan",
+        "careers": "Karier",
+        "contact": "Hubungi Kami"
+    },
+    "hero": {
+        "badge": "Platform HRIS & Payroll Terintegrasi",
+        "title": "Kelola SDM Lebih Cerdas dengan",
+        "titleHighlight": "Present HR",
+        "subtitle": "Platform HRIS terintegrasi untuk mengelola karyawan, absensi, penggajian, dan performa dalam satu sistem yang powerful.",
+        "ctaPrimary": "Hubungi Kami",
+        "ctaSecondary": "Pelajari Lebih Lanjut"
+    },
+    "features": {
+        "badge": "Fitur Lengkap",
+        "heading": "Modul Lengkap untuk Semua Kebutuhan HR",
+        "subheading": "Dari rekrutmen hingga pensiun, Present menyediakan solusi end-to-end untuk manajemen SDM perusahaan Anda.",
+        "learnMore": "Pelajari lebih lanjut",
+        "ctaDescription": "Semua modul terintegrasi dalam satu platform yang mudah digunakan",
+        "ctaLink": "Lihat semua fitur",
+        "items": {
+            "hrisCore": {
+                "title": "HRIS Core",
+                "tag": "Core",
+                "description": "Kelola data karyawan, struktur organisasi, dan dokumen HR dalam satu platform terintegrasi."
+            },
+            "attendance": {
+                "title": "Attendance",
+                "tag": "Time",
+                "description": "Sistem absensi canggih dengan face recognition, geolocation, dan integrasi mesin fingerprint."
+            },
+            "payroll": {
+                "title": "Payroll",
+                "tag": "Finance",
+                "description": "Penggajian otomatis dengan perhitungan PPh21, BPJS, dan komponen salary lainnya."
+            },
+            "performance": {
+                "title": "Performance",
+                "tag": "Growth",
+                "description": "Manajemen performa dengan KPI, 360-degree feedback, dan OKR untuk optimasi kinerja karyawan."
+            },
+            "recruitment": {
+                "title": "Recruitment",
+                "tag": "Hiring",
+                "description": "Sistem rekrutmen end-to-end dari posting lowongan hingga onboarding karyawan baru."
+            },
+            "mobileApp": {
+                "title": "Mobile App",
+                "tag": "Mobile",
+                "description": "Aplikasi HR mobile untuk karyawan mengakses layanan HR kapan saja dan di mana saja."
+            }
+        }
+    },
+    "stats": {
+        "badge": "Platform Terpercaya"
+    },
+    "clients": {
+        "eyebrow": "Klien Kami",
+        "title": "Dipercaya oleh Berbagai Perusahaan",
+        "countSuffix": "perusahaan",
+        "bottomText": "Bergabung bersama perusahaan lain yang telah mempercayakan pengelolaan SDM mereka kepada Present"
+    },
+    "cta": {
+        "badge": "Mulai Transformasi Sekarang",
+        "secondaryLink": "Pelajari fitur lengkap"
+    },
+    "howItWorks": {
+        "badge": "Proses Mudah & Cepat",
+        "heading": "Bagaimana Cara Kerjanya?",
+        "subheading": "Empat langkah mudah untuk memulai transformasi digital HR perusahaan Anda",
+        "cta": "Mulai Sekarang"
+    },
+    "footer": {
+        "company": "Perusahaan",
+        "products": "Produk",
+        "resources": "Resources",
+        "legal": "Legal",
+        "privacyPolicy": "Kebijakan Privasi",
+        "termsOfService": "Syarat & Ketentuan",
+        "copyright": "© {year} Present. Hak cipta dilindungi."
+    },
+    "common": {
+        "learnMore": "Pelajari Lebih Lanjut",
+        "getStarted": "Mulai Sekarang",
+        "contactUs": "Hubungi Kami",
+        "readMore": "Baca Selengkapnya",
+        "seeAll": "Lihat Semua"
+    },
+    "cookieConsent": {
+        "title": "Kami menghargai privasi Anda",
+        "description": "Kami menggunakan cookie untuk meningkatkan pengalaman browsing Anda, menyajikan iklan atau konten yang dipersonalisasi, dan menganalisis lalu lintas kami. Dengan mengklik \"Terima Semua\", Anda menyetujui penggunaan cookie kami.",
+        "acceptAll": "Terima Semua",
+        "rejectAll": "Tolak Semua",
+        "customize": "Kustomisasi"
+    }
+}

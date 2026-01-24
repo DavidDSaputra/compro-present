@@ -3,18 +3,21 @@
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
 import {
     Menu, X, ChevronDown, ArrowRight,
     Briefcase, CalendarCheck, Cpu, Users, Smartphone, LineChart,
     Building2, Factory, ShoppingBag, HeartHandshake,
     BookOpen, MessageSquareQuote, Award,
     FileText, Calendar, BookMarked, HelpCircle,
-    Building, Mail, Search,
+    Building, Mail, Globe,
     LayoutGrid, // Icon for collapsed logo
     Layers, Zap, Sparkles, Smile, Library, Info, Phone // New icons
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
+import { Locale } from "@/lib/i18n-config";
+import { Dictionary } from "@/dictionaries";
 
 interface NavItem {
     id: string;
@@ -27,6 +30,8 @@ interface NavItem {
 interface NavbarProps {
     items: NavItem[];
     logoUrl: string | null;
+    locale: Locale;
+    dictionary: Dictionary;
 }
 
 // Helper to get icon based on label
@@ -75,53 +80,33 @@ function getIconForLabel(label: string) {
     return <LayoutGrid className="h-5 w-5" />;
 }
 
-export function Navbar({ items, logoUrl }: NavbarProps) {
+export function Navbar({ items, logoUrl, locale, dictionary }: NavbarProps) {
+    const router = useRouter();
+    const pathname = usePathname();
     const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
     const [activeDropdown, setActiveDropdown] = React.useState<string | null>(null);
     const [isScrolled, setIsScrolled] = React.useState(false);
-    const [animationPhase, setAnimationPhase] = React.useState<'idle' | 'orb-appear' | 'orb-move' | 'sidebar-reveal' | 'sidebar-collapse'>('idle');
-    const wasScrolledRef = React.useRef(false);
-    const closeTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
-    // Delayed close function for sidebar dropdown
-    const handleSidebarMouseLeave = () => {
-        closeTimeoutRef.current = setTimeout(() => {
-            setActiveDropdown(null);
-        }, 300); // 300ms delay before closing
-    };
+    const t = dictionary;
 
-    const handleSidebarMouseEnter = () => {
-        // Cancel any pending close timeout
-        if (closeTimeoutRef.current) {
-            clearTimeout(closeTimeoutRef.current);
-            closeTimeoutRef.current = null;
+    // Function to switch locale by navigating to new URL
+    const switchLocale = (newLocale: Locale) => {
+        // Set cookie for middleware
+        document.cookie = `locale=${newLocale};path=/;max-age=31536000`;
+
+        // Get current path without locale prefix
+        const segments = pathname.split("/");
+        if (segments[1] === "id" || segments[1] === "en") {
+            segments[1] = newLocale;
+        } else {
+            segments.splice(1, 0, newLocale);
         }
+        router.push(segments.join("/"));
     };
 
     React.useEffect(() => {
         const handleScroll = () => {
-            const scrolled = window.scrollY > 100;
-
-            // Trigger animation on scroll state change
-            if (scrolled && !wasScrolledRef.current) {
-                // Entering scrolled state: show orb animation
-                setAnimationPhase('orb-appear');
-                setTimeout(() => setAnimationPhase('orb-move'), 400);
-                setTimeout(() => {
-                    setAnimationPhase('sidebar-reveal');
-                    setIsScrolled(true);
-                }, 800);
-                setTimeout(() => setAnimationPhase('idle'), 1300);
-            } else if (!scrolled && wasScrolledRef.current) {
-                // Leaving scrolled state: collapse animation
-                setAnimationPhase('sidebar-collapse');
-                setTimeout(() => {
-                    setIsScrolled(false);
-                    setAnimationPhase('idle');
-                }, 300);
-            }
-
-            wasScrolledRef.current = scrolled;
+            setIsScrolled(window.scrollY > 20);
         };
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
@@ -132,6 +117,86 @@ export function Navbar({ items, logoUrl }: NavbarProps) {
     const ctaItem = items.find((item) => item.type === "cta");
     const activeItem = regularItems.find(item => item.id === activeDropdown);
 
+    // Helper function to translate menu labels
+    const translateMenuLabel = (label: string): string => {
+        const key = label.toLowerCase().replace(/\s+/g, '');
+        const menuTranslations = t.navbar.menu as Record<string, string>;
+
+        // Map database labels to translation keys
+        const labelKeyMap: Record<string, string> = {
+            'produk': 'produk',
+            'products': 'produk',
+            'solusi': 'solusi',
+            'solutions': 'solusi',
+            'pelanggan': 'pelanggan',
+            'customers': 'pelanggan',
+            'resources': 'resources',
+            'tentangkami': 'tentangKami',
+            'aboutus': 'tentangKami',
+            'hubungikami': 'hubungiKami',
+            'contactus': 'hubungiKami',
+        };
+
+        const translationKey = labelKeyMap[key];
+        if (translationKey && menuTranslations[translationKey]) {
+            return menuTranslations[translationKey];
+        }
+        return label;
+    };
+
+    // Helper function to translate submenu labels
+    const translateSubmenuLabel = (label: string): string => {
+        const key = label.toLowerCase().replace(/\s+/g, '');
+        const submenuTranslations = t.navbar.submenu as Record<string, string>;
+
+        const labelKeyMap: Record<string, string> = {
+            'presenthriscore': 'hrisCore',
+            'hriscore': 'hrisCore',
+            'attendance': 'attendance',
+            'absensi': 'attendance',
+            'payroll': 'payroll',
+            'penggajian': 'payroll',
+            'recruitment': 'recruitment',
+            'rekrutmen': 'recruitment',
+            'performance': 'performance',
+            'kinerja': 'performance',
+            'mobilehrapp': 'mobileApp',
+            'aplikasimobilehr': 'mobileApp',
+            'enterprise': 'enterprise',
+            'manufacturing': 'manufacturing',
+            'manufaktur': 'manufacturing',
+            'retail': 'retail',
+            'services': 'services',
+            'jasa': 'services',
+            'customerstories': 'customerStories',
+            'ceritapelanggan': 'customerStories',
+            'testimonials': 'testimonials',
+            'testimoni': 'testimonials',
+            'ourclients': 'clients',
+            'klienkami': 'clients',
+            'blog': 'blog',
+            'webinars': 'webinars',
+            'webinar': 'webinars',
+            'e-books': 'ebooks',
+            'e-book': 'ebooks',
+            'ebooks': 'ebooks',
+            'ebook': 'ebooks',
+            'faq': 'faq',
+            'companyprofile': 'companyProfile',
+            'profilperusahaan': 'companyProfile',
+            'careers': 'careers',
+            'karier': 'careers',
+            'contactus': 'contact',
+            'hubungikami': 'contact',
+        };
+
+        const translationKey = labelKeyMap[key];
+        if (translationKey && submenuTranslations[translationKey]) {
+            return submenuTranslations[translationKey];
+        }
+        return label;
+    };
+
     // Reset dropdown when scroll state changes
     React.useEffect(() => {
         setActiveDropdown(null);
@@ -140,216 +205,181 @@ export function Navbar({ items, logoUrl }: NavbarProps) {
     return (
         <>
             {/* 
-              TRANSITION ORB - morphing circle element
-            */}
-            {(animationPhase === 'orb-appear' || animationPhase === 'orb-move') && (
-                <div
-                    className={cn(
-                        "navbar-orb hidden lg:block w-12 h-12",
-                        animationPhase === 'orb-appear' && "navbar-orb-enter left-1/2 top-[50px]",
-                        animationPhase === 'orb-move' && "navbar-orb-move"
-                    )}
-                />
-            )}
-
-            {/* 
-              TOP NAVBAR (Slides Up when scrolled) 
+              TOP NAVBAR (Sticky) 
             */}
             <header
                 className={cn(
-                    "fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-100 transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]",
-                    isScrolled ? "-translate-y-full" : "translate-y-0"
+                    "fixed top-0 left-0 right-0 z-40 bg-white transition-all duration-300 flex flex-col",
+                    isScrolled ? "shadow-md" : "border-b border-gray-100"
                 )}
                 onMouseLeave={() => setActiveDropdown(null)}
             >
-                <div className="flex w-full items-center justify-between py-2 px-6 lg:px-12">
-                    {/* Left Links */}
-                    <div className="hidden lg:flex items-center gap-6">
-                        <Link href="/contact" className="text-[10px] font-medium tracking-[0.15em] text-gray-600 uppercase hover:text-gray-900 transition-colors">
-                            Hubungi Kami
-                        </Link>
-                        <Link href="/about" className="text-[10px] font-medium tracking-[0.15em] text-gray-600 uppercase hover:text-gray-900 transition-colors">
-                            Tentang Kami
-                        </Link>
-                    </div>
-
-                    {/* Logo */}
-                    <Link href="/" className="flex-1 lg:flex lg:justify-center">
+                <div className={cn(
+                    "flex w-full items-center justify-between px-12 lg:px-16 transition-all duration-300",
+                    isScrolled ? "py-2" : "py-4"
+                )}>
+                    {/* Logo - Left Side */}
+                    <Link href="/" className="shrink-0 ml-5">
                         <Image
                             src={logoUrl || "/logo-present.png"}
                             alt="Present"
-                            width={180}
-                            height={50}
-                            className="h-8 md:h-10 w-auto"
+                            width={220}
+                            height={60}
+                            className="w-auto h-9 md:h-12 transition-all duration-300"
                             priority
                         />
                     </Link>
 
                     {/* Desktop Right Actions */}
-                    <div className="hidden lg:flex items-center gap-4">
-                        <button className="p-2 text-gray-600 hover:text-gray-900 transition-colors">
-                            <Search className="h-5 w-5 stroke-[1.5]" />
-                        </button>
-                        {ctaItem && (
-                            <Link href={ctaItem.href || "/contact"}>
-                                <Button variant="ghost" className="text-[10px] font-bold tracking-[0.15em] uppercase text-gray-900 hover:text-gray-600 hover:bg-transparent">
-                                    {ctaItem.label}
-                                </Button>
-                            </Link>
-                        )}
+                    <div className="hidden lg:flex items-center gap-3">
+                        {/* Language Selector */}
+                        <div className="flex items-center gap-1 text-sm font-medium">
+                            <Globe className="h-5 w-5 text-gray-500" />
+                            <button
+                                onClick={() => switchLocale("id")}
+                                className={cn(
+                                    "px-1 transition-colors",
+                                    locale === "id" ? "text-gray-900" : "text-gray-400 hover:text-gray-600"
+                                )}
+                            >
+                                ID
+                            </button>
+                            <button
+                                onClick={() => switchLocale("en")}
+                                className={cn(
+                                    "px-1 transition-colors",
+                                    locale === "en" ? "text-[#DAA520]" : "text-gray-400 hover:text-gray-600"
+                                )}
+                            >
+                                EN
+                            </button>
+                        </div>
+
+                        {/* Divider */}
+                        <div className="h-6 w-px bg-gray-200 mx-2" />
+
+                        {/* Sign In */}
+                        <Link
+                            href="/admin/login"
+                            className="text-sm font-medium text-[#1E40AF] hover:text-[#1E3A8A] transition-colors"
+                        >
+                            {t.navbar.signIn}
+                        </Link>
+
+                        {/* Hubungi Sales Button */}
+                        <Link href="/contact">
+                            <Button className="bg-[#1E40AF] hover:bg-[#1E3A8A] text-white text-sm font-medium px-5 h-10 rounded-lg shadow-sm">
+                                {t.navbar.contactSales}
+                            </Button>
+                        </Link>
+
+                        {/* Coba Gratis Button */}
+                        <Link href="/demo">
+                            <Button
+                                variant="outline"
+                                className="border-[#1E40AF] text-[#1E40AF] hover:bg-[#1E40AF] hover:text-white text-sm font-medium px-5 h-10 rounded-lg"
+                            >
+                                {t.navbar.tryFree}
+                            </Button>
+                        </Link>
                     </div>
 
-                    {/* Mobile Menu Toggle */}
-                    <div className="lg:hidden">
+                    {/* Mobile Right Actions: Language + Menu */}
+                    <div className="lg:hidden flex items-center gap-4">
+                        {/* ID EN Selector */}
+                        <div className="flex items-center gap-2 text-sm font-bold">
+                            <button
+                                onClick={() => switchLocale("id")}
+                                className={cn(
+                                    "transition-colors",
+                                    locale === "id" ? "text-gray-900" : "text-gray-400"
+                                )}
+                            >
+                                ID
+                            </button>
+                            <button
+                                onClick={() => switchLocale("en")}
+                                className={cn(
+                                    "transition-colors",
+                                    locale === "en" ? "text-[#DAA520]" : "text-gray-400"
+                                )}
+                            >
+                                EN
+                            </button>
+                        </div>
+
+                        {/* Menu Toggle */}
                         <button
-                            className="p-2 text-gray-900"
+                            className="p-1 text-[#1E40AF]"
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                         >
-                            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                            {mobileMenuOpen ? (
+                                <X className="h-8 w-8 stroke-[3]" />
+                            ) : (
+                                <Menu className="h-8 w-8 stroke-[3]" />
+                            )}
                         </button>
                     </div>
                 </div>
 
                 {/* Desktop Navigation Items */}
                 <nav className="hidden lg:block w-full border-t border-gray-100 bg-white">
-                    <ul className="flex flex-row items-center justify-center p-0 gap-8">
+                    <ul className="flex flex-row items-center px-12 lg:px-16">
                         {regularItems.map((item) => (
                             <NavItemComponent
                                 key={item.id}
                                 item={item}
                                 activeDropdown={activeDropdown}
                                 setActiveDropdown={setActiveDropdown}
-                                isScrolled={false} // Always render as Top Mode
+                                translateLabel={translateMenuLabel}
                             />
                         ))}
                     </ul>
                 </nav>
 
-                {/* Dropdown Panel (Top Mode) */}
-                {!isScrolled && (
-                    <div
-                        className={cn(
-                            "absolute left-0 right-0 top-full bg-white transition-all duration-300 ease-out overflow-hidden shadow-xl border-b border-gray-100",
-                            activeDropdown ? "opacity-100 max-h-[500px] pointer-events-auto" : "opacity-0 max-h-0 pointer-events-none"
-                        )}
-                    >
-                        {activeItem && activeItem.children && activeItem.children.length > 0 && (
-                            <div className="container mx-auto px-12 py-10">
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-                                    {activeItem.children.map((child) => (
-                                        <Link
-                                            key={child.id}
-                                            href={child.href || "#"}
-                                            className="group/item flex flex-col text-center items-center p-3 rounded-lg hover:bg-gray-50 transition-all duration-300"
-                                            onClick={() => setActiveDropdown(null)}
-                                        >
-                                            <div className="w-14 h-14 bg-gray-100 mb-4 flex items-center justify-center rounded-full transition-all duration-300 text-gray-400 group-hover/item:text-blue-600 group-hover/item:bg-blue-50">
-                                                {getIconForLabel(child.label)}
-                                            </div>
-                                            <div>
-                                                <span className="block text-[11px] font-bold tracking-[0.1em] uppercase text-gray-900 group-hover/item:text-blue-600 transition-colors duration-300">
-                                                    {child.label}
-                                                </span>
-                                            </div>
-                                        </Link>
-                                    ))}
-                                </div>
-                                {/* View All */}
-                                <div className="text-center pt-6 mt-8 border-t border-gray-100">
-                                    <Link
-                                        href={`/${activeItem.label.toLowerCase().replace(/\s+/g, '-')}`}
-                                        className="inline-flex items-center gap-2 text-[11px] font-medium tracking-[0.1em] uppercase text-gray-600 hover:text-gray-900 transition-colors duration-300 group"
-                                        onClick={() => setActiveDropdown(null)}
-                                    >
-                                        Lihat Semua
-                                        <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform duration-300" />
-                                    </Link>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                )}
-            </header>
-
-            {/* 
-              SIDE NAVBAR (appears after orb animation)
-            */}
-            <div
-                className={cn(
-                    "hidden lg:flex fixed top-1/2 left-4 z-50 h-auto max-h-[calc(100vh-32px)] w-12 hover:w-[240px] bg-white backdrop-blur-md shadow-2xl rounded-2xl border border-gray-100 flex-col items-center hover:items-start group py-3 overflow-visible transition-[width] duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]",
-                    // Animation states
-                    animationPhase === 'sidebar-reveal' && "animate-sidebar-reveal",
-                    animationPhase === 'sidebar-collapse' && "animate-sidebar-collapse",
-                    // Visibility based on scroll state
-                    isScrolled && animationPhase !== 'sidebar-collapse'
-                        ? "-translate-y-1/2 opacity-100"
-                        : "-translate-y-1/2 opacity-0 pointer-events-none scale-0"
-                )}
-                onMouseLeave={handleSidebarMouseLeave}
-                onMouseEnter={handleSidebarMouseEnter}
-            >
-                {/* Side Navigation Items */}
-                <nav className="w-full flex-1 px-1.5 group-hover:px-3 flex flex-col items-center group-hover:items-stretch overflow-hidden">
-                    <ul className="flex flex-col w-full gap-0.5">
-                        {regularItems.map((item) => (
-                            <NavItemComponent
-                                key={item.id}
-                                item={item}
-                                activeDropdown={activeDropdown}
-                                setActiveDropdown={setActiveDropdown}
-                                isScrolled={true} // Always render as Side Mode
-                            />
-                        ))}
-                    </ul>
-                </nav>
-
-                {/* Side Dropdown Flyout */}
+                {/* Dropdown Panel */}
                 <div
                     className={cn(
-                        "absolute left-full top-0 h-full w-[350px] bg-white rounded-r-2xl border-l border-gray-100 shadow-xl transition-all duration-300 ease-out overflow-hidden ml-2",
-                        activeDropdown ? "opacity-100 translate-x-0 pointer-events-auto" : "opacity-0 -translate-x-4 pointer-events-none"
+                        "absolute left-0 right-0 top-full -mt-[1px] z-10 bg-[#1E40AF] transition-all duration-300 ease-out overflow-hidden shadow-xl",
+                        activeDropdown ? "opacity-100 max-h-[400px] pointer-events-auto" : "opacity-0 max-h-0 pointer-events-none"
                     )}
+                    onMouseEnter={() => {
+                        // Keep dropdown open when hovering panel
+                        if (activeDropdown) setActiveDropdown(activeDropdown);
+                    }}
+                    onMouseLeave={() => setActiveDropdown(null)}
                 >
                     {activeItem && activeItem.children && activeItem.children.length > 0 && (
-                        <div className="p-6 h-full overflow-y-auto">
-                            <div className="grid grid-cols-1 gap-6">
+                        <div className="px-12 lg:px-16 py-4">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-16 gap-y-2">
                                 {activeItem.children.map((child) => (
                                     <Link
                                         key={child.id}
                                         href={child.href || "#"}
-                                        className="group/item flex flex-row text-left items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-all duration-300"
+                                        className="block text-white/80 hover:text-white focus:text-white transition-colors duration-200"
                                         onClick={() => setActiveDropdown(null)}
                                     >
-                                        <div className="w-10 h-10 bg-gray-100 shrink-0 flex items-center justify-center rounded-full transition-all duration-300 text-gray-400 group-hover/item:text-gray-900 group-hover/item:bg-gray-200">
-                                            {getIconForLabel(child.label)}
-                                        </div>
-                                        <div>
-                                            <span className="block text-[11px] font-bold tracking-[0.1em] uppercase text-gray-900 group-hover/item:text-gray-700 transition-colors duration-300 mb-1">
-                                                {child.label}
-                                            </span>
-                                            <span className="text-[10px] text-gray-500 capitalize leading-tight block">
-                                                Manage {child.label.toLowerCase()} efficiently
-                                            </span>
-                                        </div>
+                                        <span className="text-sm">
+                                            {translateSubmenuLabel(child.label)}
+                                        </span>
                                     </Link>
                                 ))}
                             </div>
-                            <div className="text-center pt-6 mt-6 border-t border-gray-100">
+                            {/* View All */}
+                            <div className="text-left mt-6 pt-3 border-t border-white/20">
                                 <Link
                                     href={`/${activeItem.label.toLowerCase().replace(/\s+/g, '-')}`}
-                                    className="inline-flex items-center gap-2 text-[11px] font-medium tracking-[0.1em] uppercase text-gray-600 hover:text-gray-900 transition-colors duration-300 group"
+                                    className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.1em] uppercase text-white/80 hover:text-white transition-colors duration-300"
                                     onClick={() => setActiveDropdown(null)}
                                 >
-                                    Lihat Semua
-                                    <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform duration-300" />
+                                    {t.navbar.viewAll} {translateMenuLabel(activeItem.label)}
+                                    <ArrowRight className="h-3 w-3" />
                                 </Link>
                             </div>
                         </div>
                     )}
                 </div>
-            </div>
-
-
+            </header>
 
             {/* Mobile Menu Overlay */}
             <div
@@ -373,6 +403,8 @@ export function Navbar({ items, logoUrl }: NavbarProps) {
                         items={items}
                         ctaItem={ctaItem}
                         onClose={() => setMobileMenuOpen(false)}
+                        translateMenuLabel={translateMenuLabel}
+                        translateSubmenuLabel={translateSubmenuLabel}
                     />
                 </div>
             </div>
@@ -384,83 +416,24 @@ function NavItemComponent({
     item,
     activeDropdown,
     setActiveDropdown,
-    isScrolled
+    translateLabel,
 }: {
     item: NavItem;
     activeDropdown: string | null;
     setActiveDropdown: (id: string | null) => void;
-    isScrolled: boolean;
+    translateLabel: (label: string) => string;
 }) {
     const hasChildren = item.children && item.children.length > 0;
     const isOpen = activeDropdown === item.id;
 
-    // Side Mode - special case for Hubungi Kami (direct link, no dropdown)
-    const isContactLink = item.label.toLowerCase().includes("hubungi");
-
-    if (isScrolled) {
-        // If it's Hubungi Kami, render as direct link
-        if (isContactLink) {
-            return (
-                <li className="w-full">
-                    <Link
-                        href={item.href || "/contact"}
-                        className="w-full flex items-center p-2 rounded-lg transition-all duration-300 group/btn text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-                    >
-                        <div className="w-5 h-5 flex items-center justify-center transition-transform duration-300 group-hover/btn:scale-110">
-                            {getIconForLabel(item.label)}
-                        </div>
-                        <span className="ml-4 text-[11px] font-bold tracking-[0.15em] uppercase whitespace-nowrap opacity-0 -translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 text-gray-700">
-                            {item.label}
-                        </span>
-                    </Link>
-                </li>
-            );
-        }
-
-        return (
-            <li
-                onMouseEnter={() => setActiveDropdown(item.id)}
-                className="w-full"
-            >
-                <button
-                    className={cn(
-                        "w-full flex items-center p-2 rounded-lg transition-all duration-300 group/btn",
-                        isOpen ? "bg-gray-100 text-gray-900" : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
-                    )}
-                >
-                    <div className={cn(
-                        "w-5 h-5 flex items-center justify-center transition-transform duration-300",
-                        isOpen ? "scale-110" : "group-hover/btn:scale-110"
-                    )}>
-                        {/* Use map icon based on label, or a generic grid icon if simple */}
-                        {getIconForLabel(item.label)}
-                    </div>
-                    <span className={cn(
-                        "ml-4 text-[11px] font-bold tracking-[0.15em] uppercase whitespace-nowrap opacity-0 -translate-x-4 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0",
-                        isOpen ? "text-gray-900" : "text-gray-700"
-                    )}>
-                        {item.label}
-                    </span>
-                    {hasChildren && (
-                        <div className="ml-auto opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300">
-                            <ChevronDown className="h-3 w-3 -rotate-90" />
-                        </div>
-                    )}
-                </button>
-            </li>
-        );
-    }
-
-    // Top Mode (Original)
     if (!hasChildren) {
         return (
             <li>
                 <Link
                     href={item.href || "#"}
-                    className="relative block py-3 text-[11px] font-bold tracking-[0.15em] uppercase text-gray-700 hover:text-gray-900 transition-colors duration-300 group"
+                    className="relative block py-4 px-4 text-[11px] font-bold tracking-[0.15em] uppercase text-gray-700 hover:text-[#1E40AF] transition-colors duration-300"
                 >
-                    {item.label}
-                    <span className="absolute bottom-2 left-0 w-full h-[2px] bg-gray-900 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                    {translateLabel(item.label)}
                 </Link>
             </li>
         );
@@ -469,19 +442,17 @@ function NavItemComponent({
     return (
         <li
             onMouseEnter={() => setActiveDropdown(item.id)}
-            className="relative"
+            className="flex h-full"
         >
             <button
                 className={cn(
-                    "relative flex items-center gap-1 py-3 text-[11px] font-bold tracking-[0.15em] uppercase transition-colors duration-300",
-                    isOpen ? "text-gray-900" : "text-gray-700 hover:text-gray-900"
+                    "relative flex items-center gap-1 py-4 px-6 text-[11px] font-bold tracking-[0.15em] uppercase transition-all duration-200",
+                    isOpen
+                        ? "bg-[#1E40AF] text-white"
+                        : "text-gray-700 hover:text-[#1E40AF]"
                 )}
             >
-                {item.label}
-                <span className={cn(
-                    "absolute bottom-2 left-0 w-full h-[2px] bg-gray-900 transition-transform duration-300 origin-left",
-                    isOpen ? "scale-x-100" : "scale-x-0"
-                )} />
+                {translateLabel(item.label)}
             </button>
         </li>
     );
@@ -491,10 +462,14 @@ function MobileMenu({
     items,
     ctaItem,
     onClose,
+    translateMenuLabel,
+    translateSubmenuLabel,
 }: {
     items: NavItem[];
     ctaItem?: NavItem;
     onClose: () => void;
+    translateMenuLabel: (label: string) => string;
+    translateSubmenuLabel: (label: string) => string;
 }) {
     const [expandedItems, setExpandedItems] = React.useState<string[]>([]);
 
@@ -519,6 +494,8 @@ function MobileMenu({
                             isExpanded={expandedItems.includes(item.id)}
                             onToggle={() => toggleExpanded(item.id)}
                             onClose={onClose}
+                            translateMenuLabel={translateMenuLabel}
+                            translateSubmenuLabel={translateSubmenuLabel}
                         />
                     </div>
                 ))}
@@ -527,7 +504,7 @@ function MobileMenu({
                 <div className="pt-8 mt-4 border-t border-gray-200">
                     <Link href={ctaItem.href || "/contact"} onClick={onClose}>
                         <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white h-12 text-sm font-bold tracking-wider uppercase">
-                            {ctaItem.label}
+                            {translateMenuLabel(ctaItem.label)}
                         </Button>
                     </Link>
                 </div>
@@ -541,11 +518,15 @@ function MobileNavItem({
     isExpanded,
     onToggle,
     onClose,
+    translateMenuLabel,
+    translateSubmenuLabel,
 }: {
     item: NavItem;
     isExpanded: boolean;
     onToggle: () => void;
     onClose: () => void;
+    translateMenuLabel: (label: string) => string;
+    translateSubmenuLabel: (label: string) => string;
 }) {
     const hasChildren = item.children && item.children.length > 0;
 
@@ -556,7 +537,7 @@ function MobileNavItem({
                 onClick={onClose}
                 className="flex items-center py-4 px-2 text-sm font-bold tracking-wider uppercase text-gray-900 hover:text-gray-600 border-b border-gray-100"
             >
-                {item.label}
+                {translateMenuLabel(item.label)}
             </Link>
         );
     }
@@ -570,7 +551,7 @@ function MobileNavItem({
                     isExpanded ? "text-blue-600" : "text-gray-900"
                 )}
             >
-                {item.label}
+                {translateMenuLabel(item.label)}
                 <ChevronDown
                     className={cn(
                         "h-4 w-4 transition-transform duration-300",
@@ -596,7 +577,7 @@ function MobileNavItem({
                             <div className="text-gray-400">
                                 {getIconForLabel(child.label)}
                             </div>
-                            <span className="font-medium">{child.label}</span>
+                            <span className="font-medium">{translateSubmenuLabel(child.label)}</span>
                         </Link>
                     ))}
                 </div>

@@ -8,6 +8,7 @@ import {
     CheckCircle2,
     ArrowRight
 } from "lucide-react";
+import { Dictionary } from "@/dictionaries";
 
 interface HowItWorksItem {
     id: string;
@@ -20,6 +21,7 @@ interface HowItWorksSectionProps {
     heading: string | null;
     subheading: string | null;
     items: HowItWorksItem[];
+    dictionary?: Dictionary;
 }
 
 const defaultSteps = [
@@ -60,10 +62,12 @@ export function HowItWorksSection({
     heading,
     subheading,
     items,
+    dictionary,
 }: HowItWorksSectionProps) {
     const [activeStep, setActiveStep] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
     const sectionRef = useRef<HTMLElement>(null);
+    const t = dictionary?.howItWorks;
 
     const steps = items.length > 0 ? items : defaultSteps;
 
@@ -102,8 +106,8 @@ export function HowItWorksSection({
         >
             {/* Background Decorations */}
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-20 left-10 w-72 h-72 bg-blue-100/30 rounded-full blur-3xl" />
-                <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-100/20 rounded-full blur-3xl" />
+                <div className="absolute top-20 left-10 w-72 h-72 bg-[#325095]/10 rounded-full blur-3xl" />
+                <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#7a9ece]/10 rounded-full blur-3xl" />
                 <div
                     className="absolute inset-0 opacity-[0.02]"
                     style={{
@@ -116,14 +120,16 @@ export function HowItWorksSection({
             <div className="container mx-auto px-4 lg:px-8 relative z-10">
                 {/* Header */}
                 <div className={`text-center mb-20 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 mb-6">
-                        <span className="text-sm font-semibold text-blue-700">Proses Mudah & Cepat</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#325095]/5 border border-[#325095]/10 mb-6">
+                        <span className="text-sm font-semibold text-[#325095]">
+                            {t?.badge || "Proses Mudah & Cepat"}
+                        </span>
                     </div>
                     <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-6 tracking-tight">
-                        {heading || "Bagaimana Cara Kerjanya?"}
+                        {t?.heading || heading || "Bagaimana Cara Kerjanya?"}
                     </h2>
                     <p className="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
-                        {subheading || "Empat langkah mudah untuk memulai transformasi digital HR perusahaan Anda"}
+                        {t?.subheading || subheading || "Empat langkah mudah untuk memulai transformasi digital HR perusahaan Anda"}
                     </p>
                 </div>
 
@@ -133,7 +139,7 @@ export function HowItWorksSection({
                     <div className="relative mb-16">
                         <div className="absolute top-6 left-0 right-0 h-1 bg-slate-200 rounded-full" />
                         <div
-                            className="absolute top-6 left-0 h-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full transition-all duration-700 ease-out"
+                            className="absolute top-6 left-0 h-1 bg-gradient-to-r from-[#325095] to-[#6284bb] rounded-full transition-all duration-700 ease-out"
                             style={{ width: `${((activeStep + 1) / steps.length) * 100}%` }}
                         />
 
@@ -150,21 +156,21 @@ export function HowItWorksSection({
                                     {/* Circle Indicator */}
                                     <div
                                         className={`relative w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500 ${index <= activeStep
-                                                ? 'bg-gradient-to-br from-blue-600 to-cyan-500 text-white shadow-lg shadow-blue-500/30 scale-110'
-                                                : 'bg-white text-slate-400 border-2 border-slate-200 group-hover:border-blue-300 group-hover:text-blue-500'
+                                            ? 'bg-gradient-to-br from-[#325095] to-[#6284bb] text-white shadow-lg shadow-[#325095]/30 scale-110'
+                                            : 'bg-white text-slate-400 border-2 border-slate-200 group-hover:border-[#325095]/50 group-hover:text-[#325095]'
                                             }`}
                                     >
                                         {iconMap[index] || <span className="font-bold">{index + 1}</span>}
 
                                         {/* Pulse Animation for Active */}
                                         {index === activeStep && (
-                                            <span className="absolute inset-0 rounded-full bg-blue-500 animate-ping opacity-25" />
+                                            <span className="absolute inset-0 rounded-full bg-[#325095] animate-ping opacity-25" />
                                         )}
                                     </div>
 
                                     {/* Step Label */}
                                     <span
-                                        className={`mt-4 text-sm font-semibold transition-colors duration-300 ${index <= activeStep ? 'text-blue-600' : 'text-slate-400'
+                                        className={`mt-4 text-sm font-semibold transition-colors duration-300 ${index <= activeStep ? 'text-[#325095]' : 'text-slate-400'
                                             }`}
                                     >
                                         {step.tag || `Step ${index + 1}`}
@@ -188,7 +194,7 @@ export function HowItWorksSection({
                                     <div className={`max-w-3xl mx-auto bg-white rounded-3xl p-10 shadow-xl shadow-slate-200/50 border border-slate-100 transition-all duration-500 ${index === activeStep ? 'scale-100 opacity-100' : 'scale-95 opacity-50'
                                         }`}>
                                         <div className="flex items-start gap-6">
-                                            <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-blue-500/20">
+                                            <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-gradient-to-br from-[#325095] to-[#6284bb] flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-[#325095]/20">
                                                 {index + 1}
                                             </div>
                                             <div className="flex-1">
@@ -208,8 +214,8 @@ export function HowItWorksSection({
                                                     key={dotIndex}
                                                     onClick={() => setActiveStep(dotIndex)}
                                                     className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${dotIndex === activeStep
-                                                            ? 'bg-blue-600 w-8'
-                                                            : 'bg-slate-300 hover:bg-slate-400'
+                                                        ? 'bg-[#325095] w-8'
+                                                        : 'bg-slate-300 hover:bg-slate-400'
                                                         }`}
                                                 />
                                             ))}
@@ -232,20 +238,20 @@ export function HowItWorksSection({
                         >
                             {/* Connecting Line */}
                             {index < steps.length - 1 && (
-                                <div className="absolute left-6 top-16 w-0.5 h-full bg-gradient-to-b from-blue-500 to-transparent" />
+                                <div className="absolute left-6 top-16 w-0.5 h-full bg-gradient-to-b from-[#325095] to-transparent" />
                             )}
 
                             <div className="flex gap-5">
                                 {/* Step Number Circle */}
                                 <div className="relative flex-shrink-0">
-                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">
+                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#325095] to-[#6284bb] flex items-center justify-center text-white font-bold shadow-lg shadow-[#325095]/30">
                                         {iconMap[index] || index + 1}
                                     </div>
                                 </div>
 
                                 {/* Content */}
                                 <div className="flex-1 bg-white rounded-2xl p-6 shadow-lg shadow-slate-100 border border-slate-100">
-                                    <span className="inline-block px-3 py-1 text-xs font-semibold text-blue-600 bg-blue-50 rounded-full mb-3">
+                                    <span className="inline-block px-3 py-1 text-xs font-semibold text-[#325095] bg-[#325095]/10 rounded-full mb-3">
                                         {step.tag || `Step ${index + 1}`}
                                     </span>
                                     <h3 className="text-xl font-bold text-slate-900 mb-2">
@@ -265,9 +271,9 @@ export function HowItWorksSection({
                     }`}>
                     <a
                         href="/contact"
-                        className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-full shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:-translate-y-1 transition-all duration-300"
+                        className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#325095] to-[#4a6aa8] text-white font-semibold rounded-full shadow-lg shadow-[#325095]/30 hover:shadow-xl hover:shadow-[#325095]/40 hover:-translate-y-1 transition-all duration-300"
                     >
-                        Mulai Sekarang
+                        {t?.cta || "Mulai Sekarang"}
                         <ArrowRight className="h-5 w-5" />
                     </a>
                 </div>

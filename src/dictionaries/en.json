@@ -1,0 +1,163 @@
+{
+    "navbar": {
+        "signIn": "Sign In",
+        "contactSales": "Contact Sales",
+        "tryFree": "Try Free",
+        "viewAll": "View All",
+        "menu": {
+            "produk": "Products",
+            "solusi": "Solutions",
+            "pelanggan": "Customers",
+            "resources": "Resources",
+            "tentangKami": "About Us",
+            "hubungiKami": "Contact Us"
+        },
+        "submenu": {
+            "hrisCore": "Present HRIS Core",
+            "attendance": "Attendance",
+            "payroll": "Payroll",
+            "recruitment": "Recruitment",
+            "performance": "Performance",
+            "mobileApp": "Mobile HR App",
+            "enterprise": "Enterprise",
+            "manufacturing": "Manufacturing",
+            "retail": "Retail",
+            "services": "Services",
+            "customerStories": "Customer Stories",
+            "testimonials": "Testimonials",
+            "clients": "Our Clients",
+            "blog": "Blog",
+            "webinars": "Webinars",
+            "ebooks": "E-Books",
+            "faq": "FAQ",
+            "companyProfile": "Company Profile",
+            "careers": "Careers",
+            "contact": "Contact Us"
+        }
+    },
+    "products": {
+        "title": "Products",
+        "hrisCore": "Present HRIS Core",
+        "attendance": "Attendance",
+        "payroll": "Payroll",
+        "recruitment": "Recruitment",
+        "performance": "Performance",
+        "mobileApp": "Mobile HR App"
+    },
+    "solutions": {
+        "title": "Solutions",
+        "enterprise": "Enterprise",
+        "manufacturing": "Manufacturing",
+        "retail": "Retail",
+        "services": "Services"
+    },
+    "customers": {
+        "title": "Customers",
+        "stories": "Customer Stories",
+        "testimonials": "Testimonials",
+        "clients": "Our Clients"
+    },
+    "resources": {
+        "title": "Resources",
+        "blog": "Blog",
+        "webinars": "Webinars",
+        "ebooks": "E-Books",
+        "faq": "FAQ"
+    },
+    "about": {
+        "title": "About Us",
+        "profile": "Company Profile",
+        "careers": "Careers",
+        "contact": "Contact Us"
+    },
+    "hero": {
+        "badge": "Integrated HRIS & Payroll Platform",
+        "title": "Manage HR Smarter with",
+        "titleHighlight": "Present HR",
+        "subtitle": "An integrated HRIS platform to manage employees, attendance, payroll, and performance in one powerful system.",
+        "ctaPrimary": "Contact Us",
+        "ctaSecondary": "Learn More"
+    },
+    "features": {
+        "badge": "Complete Features",
+        "heading": "Complete Modules for All HR Needs",
+        "subheading": "From recruitment to retirement, Present provides end-to-end solutions for your company's HR management.",
+        "learnMore": "Learn more",
+        "ctaDescription": "All modules integrated in one easy-to-use platform",
+        "ctaLink": "View all features",
+        "items": {
+            "hrisCore": {
+                "title": "HRIS Core",
+                "tag": "Core",
+                "description": "Manage employee data, organizational structure, and HR documents in one integrated platform."
+            },
+            "attendance": {
+                "title": "Attendance",
+                "tag": "Time",
+                "description": "Advanced attendance system with face recognition, geolocation, and fingerprint machine integration."
+            },
+            "payroll": {
+                "title": "Payroll",
+                "tag": "Finance",
+                "description": "Automatic payroll calculation with PPh21, BPJS, and other salary components."
+            },
+            "performance": {
+                "title": "Performance",
+                "tag": "Growth",
+                "description": "Performance management with KPI, 360-degree feedback, and OKR to optimize employee performance."
+            },
+            "recruitment": {
+                "title": "Recruitment",
+                "tag": "Hiring",
+                "description": "End-to-end recruitment system from job posting to onboarding new employees."
+            },
+            "mobileApp": {
+                "title": "Mobile App",
+                "tag": "Mobile",
+                "description": "Mobile HR application for employees to access HR services anytime, anywhere."
+            }
+        }
+    },
+    "stats": {
+        "badge": "Trusted Platform"
+    },
+    "clients": {
+        "eyebrow": "Our Clients",
+        "title": "Trusted by Leading Companies",
+        "countSuffix": "companies",
+        "bottomText": "Join other companies that have entrusted their HR management to Present"
+    },
+    "cta": {
+        "badge": "Start Your Transformation",
+        "secondaryLink": "Explore all features"
+    },
+    "howItWorks": {
+        "badge": "Easy & Fast Process",
+        "heading": "How It Works",
+        "subheading": "Four easy steps to start your company's digital HR transformation",
+        "cta": "Get Started Now"
+    },
+    "footer": {
+        "company": "Company",
+        "products": "Products",
+        "resources": "Resources",
+        "legal": "Legal",
+        "privacyPolicy": "Privacy Policy",
+        "termsOfService": "Terms of Service",
+        "copyright": "© {year} Present. All rights reserved."
+    },
+    "common": {
+        "learnMore": "Learn More",
+        "getStarted": "Get Started",
+        "contactUs": "Contact Us",
+        "readMore": "Read More",
+        "seeAll": "See All"
+    },
+    "cookieConsent": {
+        "title": "We value your privacy",
+        "description": "We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking \"Accept All\", you consent to our use of cookies.",
+        "acceptAll": "Accept All",
+        "rejectAll": "Reject All",
+        "customize": "Customize"
+    }
+}

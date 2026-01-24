@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Building2, Users, Boxes, Activity, Sparkles, TrendingUp } from "lucide-react";
+import { Dictionary } from "@/dictionaries";
 
 interface StatItem {
     id: string;
@@ -12,6 +13,7 @@ interface StatItem {
 interface StatsSectionProps {
     heading: string | null;
     items: StatItem[];
+    dictionary?: Dictionary;
 }
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -21,11 +23,28 @@ const iconMap: Record<string, React.ReactNode> = {
     "UPTIME": <Activity className="h-8 w-8" />,
 };
 
+// Updated color palette based on #325095 (dark to light)
 const colorMap: Record<number, { bg: string; accent: string; icon: string }> = {
-    0: { bg: "bg-gradient-to-br from-blue-500 to-blue-600", accent: "text-blue-100", icon: "text-white/80" },
-    1: { bg: "bg-gradient-to-br from-purple-500 to-purple-600", accent: "text-purple-100", icon: "text-white/80" },
-    2: { bg: "bg-gradient-to-br from-slate-800 to-slate-900", accent: "text-slate-300", icon: "text-white/60" },
-    3: { bg: "bg-gradient-to-br from-emerald-500 to-emerald-600", accent: "text-emerald-100", icon: "text-white/80" },
+    0: {
+        bg: "bg-gradient-to-br from-[#325095] to-[#4a6aa8]",
+        accent: "text-blue-100",
+        icon: "text-white/80"
+    },
+    1: {
+        bg: "bg-gradient-to-br from-[#4a6aa8] to-[#6284bb]",
+        accent: "text-blue-50",
+        icon: "text-white/80"
+    },
+    2: {
+        bg: "bg-gradient-to-br from-[#6284bb] to-[#7a9ece]",
+        accent: "text-white/90",
+        icon: "text-white/80"
+    },
+    3: {
+        bg: "bg-gradient-to-br from-[#7a9ece] to-[#92b8e1]",
+        accent: "text-white/90",
+        icon: "text-white/80"
+    },
 };
 
 function AnimatedCounter({ target, suffix = "", duration = 2000 }: { target: number; suffix?: string; duration?: number }) {
@@ -80,7 +99,7 @@ function parseStatValue(title: string | null): { value: number; suffix: string; 
     const cleaned = title.replace(/,/g, "");
 
     if (cleaned.includes("M")) {
-        return { value: 1, suffix: "M+", isPercentage: false, isMillion: true };
+        return { value: 1, suffix: "M+", isPercentage: true, isMillion: true }; // logic slightly tricky for M, assuming 1M+ for now
     }
     if (cleaned.includes("%")) {
         return { value: 99, suffix: ".9%", isPercentage: true, isMillion: false };
@@ -90,9 +109,10 @@ function parseStatValue(title: string | null): { value: number; suffix: string; 
     return { value: num, suffix: cleaned.includes("+") ? "+" : "", isPercentage: false, isMillion: false };
 }
 
-export function StatsSection({ heading, items }: StatsSectionProps) {
+export function StatsSection({ heading, items, dictionary }: StatsSectionProps) {
     const sectionRef = useRef<HTMLDivElement>(null);
     const [isVisible, setIsVisible] = useState(false);
+    const t = dictionary?.stats;
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -132,8 +152,10 @@ export function StatsSection({ heading, items }: StatsSectionProps) {
                     ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
                 `}>
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm mb-6">
-                        <Sparkles className="h-4 w-4 text-blue-500" />
-                        <span className="text-sm font-medium text-slate-600">Platform Terpercaya</span>
+                        <Sparkles className="h-4 w-4 text-[#325095]" />
+                        <span className="text-sm font-medium text-slate-600">
+                            {t?.badge || "Platform Terpercaya"}
+                        </span>
                     </div>
                     {heading && (
                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900">

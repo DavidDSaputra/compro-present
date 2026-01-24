@@ -1,6 +1,8 @@
 import { SectionRenderer } from "@/components/section-renderer";
 import prisma from "@/lib/prisma";
 import { Metadata } from "next";
+import { getDictionary } from "@/dictionaries";
+import { Locale, isValidLocale } from "@/lib/i18n-config";
 
 // Disable caching - always fetch fresh data
 export const dynamic = "force-dynamic";
@@ -29,16 +31,29 @@ async function getHomePage() {
     return page;
 }
 
-export default async function HomePage() {
-    const page = await getHomePage();
+interface HomePageProps {
+    params: Promise<{ locale: string }>;
+}
+
+export default async function HomePage({ params }: HomePageProps) {
+    const { locale: localeParam } = await params;
+    const locale: Locale = isValidLocale(localeParam) ? localeParam : "id";
+
+    const [page, dictionary] = await Promise.all([
+        getHomePage(),
+        getDictionary(locale),
+    ]);
 
     if (!page) {
         return (
             <div className="flex items-center justify-center min-h-[50vh]">
-                <p className="text-[#475569]">Halaman tidak ditemukan</p>
+                <p className="text-[#475569]">
+                    {locale === "en" ? "Page not found" : "Halaman tidak ditemukan"}
+                </p>
             </div>
         );
     }
 
-    return <SectionRenderer sections={page.sections} />;
+    return <SectionRenderer sections={page.sections} dictionary={dictionary} />;
 }
+

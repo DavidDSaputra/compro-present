@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin, ArrowUpRight, Twitter, Linkedin, Instagram, Youtube } from "lucide-react";
+import { Locale } from "@/lib/i18n-config";
+import { Dictionary } from "@/dictionaries";
 
 interface FooterProps {
     logoUrl: string | null;
@@ -10,10 +12,13 @@ interface FooterProps {
     address: string | null;
     email: string | null;
     whatsappLink: string | null;
+    locale: Locale;
+    dictionary: Dictionary;
 }
 
-export function Footer({ logoUrl, companyName, address, email, whatsappLink }: FooterProps) {
+export function Footer({ logoUrl, companyName, address, email, whatsappLink, locale, dictionary }: FooterProps) {
     const currentYear = new Date().getFullYear();
+    const t = dictionary;
 
     const footerLinks = [
         {
